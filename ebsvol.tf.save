@@ -1,0 +1,12 @@
+resource "aws_ebs_volume" "apps" {
+    availability_zone = "us-west-2a"
+    size = 24 
+    type = "gp2"
+    tags {
+        Name = "tomcat - apps Volume"
+    }
+}
+
+output "apps_volume_output" {
+  value = "${aws_ebs_volume.apps.id}"
+}
