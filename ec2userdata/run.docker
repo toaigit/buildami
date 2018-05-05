@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "Installing docker ..."
+yum -y install yum-utils device-mapper-persistent-data lvm2
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum-config-manager --enable ol7_addons
+yum -y install docker-ce
+
+systemctl enable docker
+chkconfig docker on

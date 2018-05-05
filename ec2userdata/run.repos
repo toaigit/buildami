@@ -1,0 +1,10 @@
+#  run yum update
+echo "Info: Updating Repos ..."
+/bin/cp -p $RUNDIR/repos/shibboleth.repo /etc/yum.repos.d
+/bin/cp -p $RUNDIR/repos/mongodb.repo /etc/yum.repos.d
+/bin/cp -p $RUNDIR/repos/epel.repo /etc/yum.repos.d
+/bin/cp -p $RUNDIR/repos/public-yum-ol7.repo /etc/yum.repos.d
+/bin/cp -p $RUNDIR/repos/mysql-community.repo /etc/yum.repos.d
+/bin/cp -p $RUNDIR/repos/RPM-GPG-KEY-mysql /etc/pki/rpm-gpg
+echo "Info: Running YUM update ..."
+yum -y update

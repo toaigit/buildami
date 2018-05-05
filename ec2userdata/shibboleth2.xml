@@ -1,0 +1,117 @@
+<SPConfig
+   xmlns="urn:mace:shibboleth:2.0:native:sp:config"
+   xmlns:conf="urn:mace:shibboleth:2.0:native:sp:config"
+   xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+   xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"    
+   xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+   clockSkew="180">
+
+  <!--
+    This is a stripped down Shibboleth configuration for simple
+    Stanford SPs; it's designed for services migrating from WebAuth to
+    Shibboleth.
+    
+    By default, this configuration uses the IT Lab IdP, since that's
+    the easiest IdP to work with. Shibboleth SPs will work with the IT
+    Lab IdP without having to register. There are 3 test users - see
+    https://idp.itlab.stanford.edu/ for details.
+  -->
+
+  <!--
+    By default, in-memory StorageService, ReplayCache, ArtifactMap, and SessionCache
+    are used. See example-shibboleth2.xml for samples of explicitly configuring them.
+  -->
+
+  <!-- The ApplicationDefaults element is where most of Shibboleth's SAML bits are defined. -->
+  <ApplicationDefaults
+     entityID="http://test.resourceonline.org/"
+     REMOTE_USER="uid">
+
+    <Sessions
+       lifetime="14400"
+       timeout="300"
+       relayState="ss:mem"
+       checkAddress="false"
+       handlerSSL="true"
+       cookieProps="; path=/; secure; HttpOnly">
+
+      <!-- production IdP -->
+      <SSO entityID="https://idp.stanford.edu/">SAML2</SSO>
+     
+      <!-- local-only logout. -->
+      <Logout>Local</Logout>
+            
+      <!--
+        Extension service that generates "approximate" metadata based
+        on SP configuration.
+      -->
+      <Handler type="MetadataGenerator" Location="/Metadata" signing="false"/>
+
+      <Handler type="Status" Location="/Status" acl="127.0.0.1 ::1"/>
+
+      <!-- Session diagnostic service. -->
+      <Handler type="Session" Location="/Session" showAttributeValues="false"/>
+
+    </Sessions>
+
+    <!--
+      Replace nobody@stanford.edu with either your, or your team's,
+      email address
+      
+      Either replace the styleSheet with the (relative) URL of your
+      own, or ensure that /shibboleth-sp/main.css is loadable, using an
+      alias in your Apache 2.x configuration:
+      
+        Alias /shibboleth-sp /usr/share/shibboleth
+    -->
+    <Errors
+      supportContact="yourteam@lists.stanford.edu"
+      helpLocation="/about.html"
+      styleSheet="/shibboleth-sp/main.css"/>
+
+    <MetadataProvider
+      type="XML"
+      uri="https://idp.stanford.edu/metadata.xml"
+      backingFilePath="metadata.xml"
+      reloadInterval="7200" />
+
+    <AttributeExtractor
+       type="XML"
+       validate="true"
+       reloadChanges="false"
+       path="attribute-map.xml"/>
+        
+    <AttributeFilter
+       type="XML"
+       validate="true"
+       path="attribute-policy.xml"/>
+
+    <CredentialResolver
+       type="File"
+       key="sp-key.pem"
+       certificate="sp-cert.pem"/>
+
+
+  </ApplicationDefaults>
+  <!-- DO NOT EDIT BELOW -->
+
+  <!--
+    Policies that determine how to process and authenticate runtime
+    messages.
+  -->
+  <SecurityPolicyProvider
+     type="XML"
+     validate="true"
+     path="security-policy.xml"/>
+
+  <!--
+    Low-level configuration about protocols and bindings available for
+    use.
+  -->
+  <ProtocolProvider
+     type="XML"
+     validate="true"
+     reloadChanges="false"
+     path="protocols.xml"/>
+
+</SPConfig>

@@ -1,0 +1,24 @@
+#!/bin/bash
+#   userdata for tomcat server
+#   Usage $0 VOLID it is passed from the userdata
+
+RUNDIR=`dirname $0`
+. $RUNDIR/global.env
+
+/bin/timedatectl set-timezone America/Los_Angeles
+$RUNDIR/run.repos
+
+$RUNDIR/run.crusers
+#  Mount additional ebs or efs filesystem if needed
+$RUNDIR/run.mountfs
+
+echo "Install required softwares ..."
+for cmd in `cat /tmp/runcmd.config`
+do
+  echo "Info: runing $cmd ..."
+  $RUNDIR/run.$cmd
+done
+
+umount /share
+
+echo "------------- Done. -----------------"

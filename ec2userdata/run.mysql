@@ -1,0 +1,6 @@
+#  install mysql
+installed=0
+echo "Installing MySQL ..."
+cp $RUNDIR/repos/mysql-community.repo /etc/yum.repos.d
+cp $RUNDIR/repos/RPM-GPG-KEY-mysql /etc/pki/rpm-gpg
+yum install -y mysql-server

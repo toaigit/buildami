@@ -1,0 +1,5 @@
+#
+This is the userdata to create AMI with specific applications.
+The image will then be used to build the application with addition
+steps for application configuration.
+dont forget to clean sudo users, /tmp/ /var/logs by empty the files.

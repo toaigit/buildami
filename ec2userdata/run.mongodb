@@ -1,0 +1,4 @@
+#  install mongo db
+echo "Installing MongoDB ..."
+yum -y install mongodb-org
+cp -p $RUNDIR/mongod.conf /etc

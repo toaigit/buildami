@@ -1,0 +1,8 @@
+# install shibboleth
+echo "Installing Shibboleth SP ..."
+yum -y install shibboleth libxmltooling7
+echo "Copy Stanford specific shibboleth configuration ..."
+/bin/cp -p $RUNDIR/attribute-map.xml /etc/shibboleth
+/bin/cp -p $RUNDIR/protocols.xml /etc/shibboleth
+/bin/cp -p $RUNDIR/shibboleth2.xml /etc/shibboleth
+#

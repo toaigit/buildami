@@ -1,0 +1,19 @@
+#  install tomcat
+mkdir -p $TOMCAT_BASE
+cd $TOMCAT_BASE
+if [ ! -f $SOFTDIR/$TOMCAT_VER.tar.gz ] ; then
+   echo "Error: $TOMCAT_VER.tar.gz does NOT  exist."
+else
+   echo "Installing tomcat ..."
+   tar -xzvf $SOFTDIR/$TOMCAT_VER.tar.gz
+   ln -s $TOMCAT_VER tomcat
+   echo "Installing connector mod_jk ..."
+   yum -y install httpd-devel apr apr-devel apr-util apr-util-devel gcc gcc-c++ make autoconf libtool
+   cd $SOFTDIR/tomcat-connectors-1.2.42-src/native
+   make clean
+   ./configure --with-apxs=/bin/apxs
+   make
+   libtool --finish /usr/lib64/http/modules
+   make install
+fi
+#
